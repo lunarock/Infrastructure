@@ -1,0 +1,55 @@
+jenkins:
+  securityRealm:
+    local:
+      users:
+      - id: "panda"
+        password: "panda"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+      - "Overall/Administer:panda"
+  numExecutors: 0
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          id: "artifactory"
+          username: "admin"
+          password: "password"
+          scope: GLOBAL
+      - basicSSHUserPrivateKey:
+          id: "jenkins_agent"
+          username: "jenkins"
+          privateKeySource:
+            directEntry:
+              privateKey: |
+                -----BEGIN OPENSSH PRIVATE KEY-----
+                b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+                QyNTUxOQAAACCtf5Ifa9RURd4GaBNaWN+ZYxabVHbLEpQ3dhisJIF81QAAAJB2YTRYdmE0
+                WAAAAAtzc2gtZWQyNTUxOQAAACCtf5Ifa9RURd4GaBNaWN+ZYxabVHbLEpQ3dhisJIF81Q
+                AAAEBbm24bzUUo+AqS/+PFnbLnGhal4WH20Vk5bxCsMo18C61/kh9r1FRF3gZoE1pY35lj
+                FptUdssSlDd2GKwkgXzVAAAADXBhbmRhQHZhZ3JhbnQ=
+                -----END OPENSSH PRIVATE KEY-----
+          scope: GLOBAL
+tool:
+  sonarRunnerInstallation:
+    installations:
+    - name: "SonarQube"
+      properties:
+      - installSource:
+          installers:
+          - sonarRunnerInstaller:
+              id: "4.7.0.2747"
+unclassified:
+  locale:
+    ignoreAcceptLanguage: true
+    systemLocale: "US:EN"
+  sonarGlobalConfiguration:
+    buildWrapperEnabled: false
+    installations:
+    - name: "SonarQube"
+      serverUrl: "http://192.168.44.44:9000"
+      triggers:
+        skipScmCause: false
+        skipUpstreamCause: false
